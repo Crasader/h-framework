@@ -1,0 +1,6 @@
+package classloader;
+
+
+class Test {
+
+}
