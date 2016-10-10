@@ -1,4 +1,6 @@
 package classloader;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,38 @@ import javax.tools.ToolProvider;
 public class LoaderUtil {
 	/**
 	 * ∂ØÃ¨º”‘ÿ¿‡
+	 * @throws IOException 
 	 **/
-	 public static boolean loadClass(String classPath) {
-	 	//TODO ClassLoader.defineClass(className, byte[], start, length)
+	 public static boolean loadClass(String className, String classPath) throws IOException {
+		 //TODO ClassLoader.defineClass(className, byte[], start, length)
+		 FileInputStream fis = null;
+		 ByteArrayOutputStream bos = null;
+		 int len = 0;
+		 byte[] buff = new byte[1024];
+		 byte[] bs = null;
+		 try {
+			fis = new FileInputStream(classPath);
+			bos = new ByteArrayOutputStream();
+			while ((len = fis.read(buff)) != -1) {
+				bos.write(buff, 0, len);
+			}
+			bs = bos.toByteArray();
+		 } finally {
+			 if (null != fis) {
+				 try {
+					fis.close();
+				 } catch (Exception e) {}
+			 }
+			 if (null != bos) {
+				 try {
+					 bos.close();
+				 } catch (Exception e) {}
+			 }
+		 } 
+		 if (bs == null) {
+			 return false;
+		 }
+		 //TODO
 		 return false;
 	 }
 
@@ -54,11 +85,12 @@ public class LoaderUtil {
 			List<String> subClass = classManager.getSubJavaClassName();
 			if (subClass != null) {
 				for (String subClassName : subClass) {
-					loadClass(subClassName);
+					//TODO path
+					loadClass(subClassName, "");
 				}
 			}
 			String mainClassName = classManager.getMainJavaClassName();
-			loadClass(mainClassName);
+			loadClass(mainClassName, "");
 		}
 	 }
 }
