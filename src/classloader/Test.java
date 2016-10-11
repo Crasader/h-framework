@@ -10,14 +10,14 @@ class Test {
 		@SuppressWarnings("resource")
 		FileReader reader = new FileReader(rootPath + "/ATest.java");
 		String code = reader.toString();
-		// ±àÒë&ÔØÈëÀà
+		// ç¼–è¯‘ç±»
 		LoaderUtil.compiler("ATest", code, "com.ATest");
 		
-		// »ñµÃÀà
+		// è·å–ç±»
 		Class<?> clazz = Class.forName("com.ATest");
 		String mainMethod = "main";
 		Method method = clazz.getMethod(mainMethod, new Class<?>[]{String[].class});
-		// ÔËĞĞ·½·¨
+		// æ‰§è¡Œæ–¹æ³•
 		method.invoke(null, new Object[]{null});
 	}
 }

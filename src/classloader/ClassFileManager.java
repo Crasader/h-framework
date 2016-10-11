@@ -10,21 +10,22 @@ import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 
+/**
+ * @author huangliy
+ * 2016å¹´10æœˆ12æ—¥
+ */
 public class ClassFileManager extends ForwardingJavaFileManager<StandardJavaFileManager> {
-	// ÀàËùÓµÓĞµÄ×ÓÀàÁĞ±í
+	// ç±»å
 	private List<String> classNameList;
 
-	/**
-     * ÖØÔØ·½·¨
-     */
 	protected ClassFileManager(StandardJavaFileManager manager) {
 		super(manager);
 		this.classNameList = new ArrayList<String>();
 	}
 
 	/**
-     * »ñµÃÖ÷Àà
-     */
+	 * è·å¾—ä¸»ç±»å
+	 */
 	public String getMainJavaClassName() {
 		if (this.classNameList.isEmpty()) {
 			return null;
@@ -32,9 +33,10 @@ public class ClassFileManager extends ForwardingJavaFileManager<StandardJavaFile
 		return this.classNameList.get(this.classNameList.size() - 1);
 	}
 
+	
 	/**
-     * »ñµÃ×ÓÀà
-     */
+	 * è·å¾—å­ç±»å
+	 */
 	public List<String> getSubJavaClassName() {
 		if (this.classNameList.size() < 2) {
 			return null;

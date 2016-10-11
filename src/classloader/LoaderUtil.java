@@ -13,12 +13,10 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
-/**
- * ‘ÿ»Î¿‡π§æﬂ
- */
+
 public class LoaderUtil {
 	/**
-	 * ∂ØÃ¨º”‘ÿ¿‡
+	 * ËΩΩÂÖ•Á±ª
 	 * @throws IOException 
 	 **/
 	 public static boolean loadClass(String className, String filePath) throws IOException {
@@ -49,14 +47,14 @@ public class LoaderUtil {
 		 if (bs == null) {
 			 return false;
 		 }
-		 // º”‘ÿ¿‡
+		 // ËΩΩÂÖ•Á±ª
 		 HClassLoader loader = new HClassLoader();
 		 loader.loadClass(className, bs);
 		 return true;
 	 }
 
 	 /**
-	  * ±‡“Î¥˙¬Î
+	  * ÁºñËØë&ËΩΩÂÖ•javaÊñá‰ª∂
 	 * @throws IOException 
 	  */
 	 public static void compiler(String className, String code, String classPath) throws IOException {
@@ -83,7 +81,7 @@ public class LoaderUtil {
 		classManager.close();
 
 		if (succ) {
-			// ±‡“Î≥…π¶£¨÷¥––‘ÿ»Î
+			// ËΩΩÂÖ•Â≠êÁ±ª
 			List<String> subClass = classManager.getSubJavaClassName();
 			if (subClass != null) {
 				for (String subClassName : subClass) {

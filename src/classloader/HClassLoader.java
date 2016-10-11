@@ -1,11 +1,13 @@
 package classloader;
 
+/**
+ * @author huangliy
+ * 
+ */
 public class HClassLoader extends ClassLoader{
 	
 	/**
-	 * ×°ÔØÀà
-	 * @param className
-	 * @param bs
+	 * è½½å…¥ç±»
 	 */
 	public void loadClass(String className, byte[] bs) {
 		super.defineClass(className, bs, 0, bs.length);
