@@ -9,6 +9,7 @@ import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
+import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
@@ -20,15 +21,14 @@ public class LoaderUtil {
 	 * 动态加载类
 	 * @throws IOException 
 	 **/
-	 public static boolean loadClass(String className, String classPath) throws IOException {
-		 //TODO ClassLoader.defineClass(className, byte[], start, length)
+	 public static boolean loadClass(String className, String filePath) throws IOException {
 		 FileInputStream fis = null;
 		 ByteArrayOutputStream bos = null;
 		 int len = 0;
 		 byte[] buff = new byte[1024];
 		 byte[] bs = null;
 		 try {
-			fis = new FileInputStream(classPath);
+			fis = new FileInputStream(filePath);
 			bos = new ByteArrayOutputStream();
 			while ((len = fis.read(buff)) != -1) {
 				bos.write(buff, 0, len);
@@ -49,8 +49,10 @@ public class LoaderUtil {
 		 if (bs == null) {
 			 return false;
 		 }
-		 //TODO
-		 return false;
+		 // 加载类
+		 HClassLoader loader = new HClassLoader();
+		 loader.loadClass(className, bs);
+		 return true;
 	 }
 
 	 /**
@@ -85,12 +87,11 @@ public class LoaderUtil {
 			List<String> subClass = classManager.getSubJavaClassName();
 			if (subClass != null) {
 				for (String subClassName : subClass) {
-					//TODO path
-					loadClass(subClassName, "");
+					loadClass(subClassName, "./" + subClassName + Kind.CLASS.extension);
 				}
 			}
 			String mainClassName = classManager.getMainJavaClassName();
-			loadClass(mainClassName, "");
+			loadClass(mainClassName, "./" + mainClassName + Kind.CLASS.extension);
 		}
 	 }
 }
