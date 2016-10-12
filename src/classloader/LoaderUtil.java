@@ -14,6 +14,10 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 
+/**
+ * @author huangliy
+ * 载入工具
+ */
 public class LoaderUtil {
 	/**
 	 * 载入类
@@ -57,7 +61,7 @@ public class LoaderUtil {
 	  * 编译&载入java文件
 	 * @throws IOException 
 	  */
-	 public static void compiler(String className, String code, String classPath) throws IOException {
+	 public static void compiler(String className, String code, String sourcePath) throws IOException {
 	 	JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		JavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null);
@@ -70,8 +74,8 @@ public class LoaderUtil {
 		List<String> options = new ArrayList<String>();
 		options.add("-encoding");
 		options.add("UTF-8");
-		options.add("-classpath");
-		options.add(classPath);
+		options.add("-sourcepath");
+		options.add(sourcePath);
 		options.add("-d");
 		options.add("bin");
 
@@ -89,7 +93,7 @@ public class LoaderUtil {
 				}
 			}
 			String mainClassName = classManager.getMainJavaClassName();
-			loadClass(mainClassName, "./" + mainClassName + Kind.CLASS.extension);
+			loadClass(mainClassName, "bin/" + mainClassName.replace(".", "/") + Kind.CLASS.extension);
 		}
 	 }
 }
