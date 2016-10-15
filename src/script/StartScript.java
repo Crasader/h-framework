@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import util.ZipUtil;
+
 /**
  * @author huangliy
  * 启动脚本
@@ -13,12 +15,15 @@ import java.net.Socket;
 public class StartScript {
 	public static void main(String[] args) throws Throwable {
 		Socket socket = new Socket("106.75.6.79", 8210);
+		
 		 // 向服务器端发送数据  
         OutputStream os =  socket.getOutputStream();  
         DataOutputStream bos = new DataOutputStream(os);  
-        bos.writeUTF("player@getPlayerInfo");  
+        byte[] command = ZipUtil.getZipString("reconnect?sessionId=sadfqwrqewf");
+        bos.write(command);
         bos.flush();  
-
+        System.out.println(socket.isBound());
+        System.out.println(socket.isConnected());
         // 接收服务器端数据  
         InputStream is = socket.getInputStream();  
         DataInputStream dis = new DataInputStream(is);  
