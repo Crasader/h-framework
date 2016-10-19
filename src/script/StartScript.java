@@ -1,12 +1,9 @@
 package script;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-
-import util.ZipUtil;
 
 /**
  * @author huangliy
@@ -19,19 +16,19 @@ public class StartScript {
 		 // 向服务器端发送数据  
         OutputStream os =  socket.getOutputStream();  
         DataOutputStream bos = new DataOutputStream(os);  
-        byte[] command = ZipUtil.getZipString("reconnect?sessionId=sadfqwrqewf");
-        bos.write(command);
+        // 创建一个数据包
+        ReignPack pack = new ReignPack("reconnect", "sessionId=heihei", true);
+        bos.write(pack.getSendData());
         bos.flush();  
-        System.out.println(socket.isBound());
-        System.out.println(socket.isConnected());
+
         // 接收服务器端数据  
-        InputStream is = socket.getInputStream();  
-        DataInputStream dis = new DataInputStream(is);  
-        System.out.println(dis.readUTF());  
+        InputStream in = socket.getInputStream();  
+        byte[] back = new byte[1000];
+        in.read(back);
+        System.out.println(new String(back));  
         
         bos.close();
-        is.close();
+        in.close();
         socket.close();
-        
 	}
 }
