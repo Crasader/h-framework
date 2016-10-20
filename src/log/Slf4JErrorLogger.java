@@ -172,7 +172,7 @@ public class Slf4JErrorLogger extends AbstractLogger{
 		int index = 1;
 		for (StackTraceElement element : stacks) {
 			String value = element.toString();
-			sb.append(SymbolConstants.NEW_LINE).append(value);
+			sb.append(SymbolConstants.NEW_LINE).append(SymbolConstants.TAB).append(value);
 			
 			index++;
 			if (index > num) {

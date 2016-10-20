@@ -2,8 +2,8 @@ package util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.zip.DeflaterInputStream;
 import java.util.zip.DeflaterOutputStream;
+import java.util.zip.InflaterInputStream;
 
 /**
  * @author huangliy
@@ -39,7 +39,7 @@ public class ZipUtil {
 		byte[] rtn = null;
 		try {
 			ByteArrayInputStream in = new ByteArrayInputStream(content);
-			DeflaterInputStream din = new DeflaterInputStream(in);
+			InflaterInputStream din = new InflaterInputStream(in);
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			int i = -1;
 			byte[] buff = new byte[4096];
@@ -54,13 +54,5 @@ public class ZipUtil {
 			e.printStackTrace();
 		}
 		return rtn;
-	}
-	
-	public static void main(String[] args) {
-		String a = "haha你好";
-		
-		byte[] b = getZipString(a);
-		b = getUnzipString(b);
-		System.out.println(new String(b));
 	}
 }
