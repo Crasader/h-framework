@@ -15,10 +15,22 @@ public class Slf4JLoggerFactory extends InternalLoggerFactory{
 		return new Slf4JLogger(org.slf4j.LoggerFactory.getLogger(name));
 	}
 
+	/* 
+	 * @see log.InternalLoggerFactory#createErrorLogger(java.lang.String)
+	 */
 	@Override
 	protected Logger createErrorLogger(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Slf4JErrorLogger(org.slf4j.LoggerFactory.getLogger(name));
 	}
-
+	
+	/**
+	 * tests
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		InternalLoggerFactory.setErrorLogger("h.error");
+		Logger log = InternalLoggerFactory.getLogger("test");
+		
+		log.info("你好{}{}{}", 1,2,"da");
+	}
 }

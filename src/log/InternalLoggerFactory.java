@@ -9,6 +9,8 @@ public abstract class InternalLoggerFactory {
 	private static volatile InternalLoggerFactory defaultFactory;
 	/** 默认的错误日志 */
 	static volatile Logger errorLog;
+	/** 异常堆栈行数 */
+	static volatile int LINES = 100;
 	
 	static {
 		final String name = InternalLoggerFactory.class.getName();
@@ -34,6 +36,17 @@ public abstract class InternalLoggerFactory {
 		return defaultFactory;
 	}
 
+	/**
+	 * 改变错误日志打印行数
+	 * @param num
+	 */
+	public static void changeErrorLines(int num) {
+		if (num <= 0) {
+			return;
+		}
+		LINES = num;
+	}
+	
 	/**
 	 * 设置默认日志工厂
 	 * @param defaultFactory

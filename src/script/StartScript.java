@@ -25,7 +25,7 @@ public class StartScript {
         InputStream in = socket.getInputStream();  
         byte[] back = new byte[1000];
         in.read(back);
-        System.out.println(new String(back));  
+        System.out.println(ReignPack.parseRecv(back));  
         
         bos.close();
         in.close();

@@ -1,20 +1,28 @@
 package log;
 
 import org.slf4j.Logger;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
+import org.slf4j.helpers.FormattingTuple;
+import org.slf4j.helpers.MessageFormatter;
+
+import string.SymbolConstants;
 
 /**
- * Slf4JLogger
+ * Slf4JErrorLogger
  * @author huangliy
  *
  */
-public class Slf4JLogger extends AbstractLogger{
+public class Slf4JErrorLogger extends AbstractLogger{
 	/** logger */
 	private final transient Logger logger;
+	
+	private static Marker FATAL = MarkerFactory.getMarker("FATAL");
 	
 	/**
 	 * 构造函数
 	 */
-	public Slf4JLogger(Logger logger) {
+	public Slf4JErrorLogger(Logger logger) {
 		super(logger.getName());
 		this.logger = logger;
 	}
@@ -36,7 +44,7 @@ public class Slf4JLogger extends AbstractLogger{
 
 	@Override
 	public void trace(String msg, Throwable t) {
-		logger.trace(msg, t);
+		logger.trace(getThrowableTrace(msg, t));
 	}
 
 	@Override
@@ -56,7 +64,7 @@ public class Slf4JLogger extends AbstractLogger{
 
 	@Override
 	public void debug(String msg, Throwable t) {
-		logger.debug(msg, t);
+		logger.debug(getThrowableTrace(msg, t));
 		
 	}
 
@@ -77,72 +85,100 @@ public class Slf4JLogger extends AbstractLogger{
 
 	@Override
 	public void info(String msg, Throwable t) {
-		logger.info(msg, t);
+		logger.info(getThrowableTrace(msg, t));
 	}
 
 	@Override
 	public boolean isWarnEnable() {
-		return InternalLoggerFactory.errorLog.isWarnEnable();
+		return logger.isWarnEnabled();
 	}
 
 	@Override
 	public void warn(String msg) {
-		InternalLoggerFactory.errorLog.warn(msg);
+		logger.warn(msg);
 	}
 
 	@Override
 	public void warn(String format, Object... args) {
-		InternalLoggerFactory.errorLog.warn(format, args);
+		logger.warn(format, args);
 	}
 
 	@Override
 	public void warn(String msg, Throwable t) {
-		InternalLoggerFactory.errorLog.warn(msg, t);
+		logger.warn(getThrowableTrace(msg, t));
 	}
 
 	@Override
 	public boolean isErrorEnable() {
-		return InternalLoggerFactory.errorLog.isErrorEnable();
+		return logger.isErrorEnabled();
 	}
 
 	@Override
 	public void error(String msg) {
-		InternalLoggerFactory.errorLog.error(msg);
+		logger.error(msg);
 	}
 
 	@Override
 	public void error(String format, Object... args) {
-		InternalLoggerFactory.errorLog.error(format, args);
+		logger.error(format, args);
 	}
 
 	@Override
 	public void error(String msg, Throwable t) {
-		InternalLoggerFactory.errorLog.error(msg, t);
+		logger.error(getThrowableTrace(msg, t));
 	}
 
 	@Override
 	public void error(String format, Throwable t, Object... args) {
-		InternalLoggerFactory.errorLog.error(format, t, args);
+		FormattingTuple ft = MessageFormatter.arrayFormat(format, args);
+		String fStr = ft.getMessage();
+		InternalLoggerFactory.errorLog.error(getThrowableTrace(fStr, t));
 	}
 
 	@Override
 	public boolean isFatalEnable() {
-		return InternalLoggerFactory.errorLog.isErrorEnable();
+		return logger.isErrorEnabled(FATAL);
 	}
 
 	@Override
 	public void fatal(String msg) {
-		InternalLoggerFactory.errorLog.fatal(msg);
+		logger.error(FATAL, msg);
 	}
 
 	@Override
 	public void fatal(String format, Object... args) {
-		InternalLoggerFactory.errorLog.fatal(format, args);
+		logger.error(FATAL, format, args);
 	}
 
 	@Override
 	public void fatal(String msg, Throwable t) {
-		InternalLoggerFactory.errorLog.fatal(msg, t);
+		logger.error(FATAL, getThrowableTrace(msg, t));
 	}
 	
+	/**
+	 * 获取一次Trace信息
+	 * @param msg
+	 * @param t
+	 * @return
+	 */
+	private String getThrowableTrace(String msg, Throwable t) {
+		t = getOriginThrowable(t);
+		StringBuilder sb = new StringBuilder();
+		int num = InternalLoggerFactory.LINES;
+		StackTraceElement[] stacks = t.getStackTrace();
+		sb.append(t.toString());
+		sb.append("#");
+		
+		int index = 1;
+		for (StackTraceElement element : stacks) {
+			String value = element.toString();
+			sb.append(SymbolConstants.NEW_LINE).append(value);
+			
+			index++;
+			if (index > num) {
+				break;
+			}
+		}
+		return sb.toString();
+	}
 }
