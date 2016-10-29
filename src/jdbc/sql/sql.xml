@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls xmlns="h-framework/sql"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<sql id = "test1">
+		test 111
+	</sql>
+</sqls>

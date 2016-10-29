@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="h-framework/sql" elementFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="h-framework/sql">
+	<complexType name="sql">
+		<simpleContent>
+			<extension base="string">
+				<attribute name="id" type="string"></attribute>
+			</extension>
+		</simpleContent>
+	</complexType>
+</schema>
