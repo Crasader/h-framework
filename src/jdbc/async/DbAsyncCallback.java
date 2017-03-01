@@ -57,7 +57,16 @@ public class DbAsyncCallback implements AsyncCallback{
 			sql = sql.trim();
 			return SqlFormatter.format(sql, args);
 		}
-		//TODO 添加jdbc实体逻辑
+		// 添加jdbc实体逻辑
+		sql = null;
+		switch (async.type()) {
+		case INSERT:
+			
+			break;
+
+		default:
+			break;
+		}
 		return null;
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
  * Cache
  * @author huangliy
  */
+@SuppressWarnings("unchecked")
 public interface Cache<K, V> {
 	/**
 	 * 从缓存读
@@ -19,7 +20,7 @@ public interface Cache<K, V> {
 	 * @param keys
 	 * @return List<V>
 	 */
-	List<V> mget(K...keys);
+	List<V> mget(K... keys);
 	
 	/**
 	 * 放入缓存

@@ -1,6 +1,7 @@
 package jdbc.orm;
 
 import jdbc.NameStrategy;
+import jdbc.orm.cache.CacheManager;
 
 /**
  * JdbcEntity
@@ -25,6 +26,10 @@ public class JdbcEntity {
 	private String deleteSQL;
 	private String tableName;// 表名
 	private ThreadLocal<Boolean> delaySQLEnable;//延迟执行SQL是否启用
-	//TODO
+	private CacheManager cacheManager; // 缓存管理器
 	
+	//TODO
+	public static JdbcEntity resolve(Class<?> clazz, NameStrategy nameStrategy) {
+		return null;
+	}
 }
