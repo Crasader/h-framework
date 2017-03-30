@@ -32,4 +32,13 @@ public class JdbcEntity {
 	public static JdbcEntity resolve(Class<?> clazz, NameStrategy nameStrategy) {
 		return null;
 	}
+
+	/**
+	 * 获得查询所有sql
+	 * @return
+	 * $Date: 2017年3月28日下午8:40:32
+	 */
+	public String getSelectAllSQL() {
+		return selectAllSQL;
+	}
 }

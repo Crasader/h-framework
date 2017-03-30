@@ -41,14 +41,6 @@ public interface BaseJdbcExtractor extends JdbcExtractor{
 	<T> void insert(final T newInstance, final JdbcEntity entity, final String... keys);
 	
 	/**
-	 * 延迟插入
-	 * @param newInstance
-	 * @param entity
-	 * @param keys
-	 */
-	<T> void insertDelay(final T newInstance, final JdbcEntity entity, final String... keys);
-	
-	/**
 	 * 更新
 	 * @param transientObject
 	 * @param entity

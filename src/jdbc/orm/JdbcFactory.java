@@ -96,8 +96,36 @@ public class JdbcFactory implements InitializingBean{
 		this.cacheConfigFile = cacheConfigFile;
 	}
 	
+	/**
+	 * 初始化
+	 * @throws Exception
+	 * $Date: 2017年3月2日下午4:57:48
+	 */
+	public void init() throws Exception {
+		parseCacheConfig();
+	}
 	
+	/**
+	 * 解析缓存配置
+	 * $Date: 2017年3月2日下午4:58:27
+	 */
+	private void parseCacheConfig() {
+		if (null != cacheConfigFile) {
+			
+		}
+		
+	}
 	
+	/**
+	 * 获得JDBC实体
+	 * @param clazz
+	 * @return
+	 * $Date: 2017年3月28日下午9:00:44
+	 */
+	public JdbcEntity getJdbcEntity(Class<?> clazz) {
+		return entityMap.get(clazz);
+	}
+
 	/* 
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
