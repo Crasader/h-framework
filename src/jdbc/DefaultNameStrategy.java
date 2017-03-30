@@ -34,7 +34,27 @@ public class DefaultNameStrategy implements NameStrategy{
 	 */
 	@Override
 	public String propertyNameToColunmnName(String propertyName) {
-		return null;
+		StringBuilder sb = new StringBuilder();
+		boolean capital = false;
+		boolean first = true;
+		
+		for (int i = 0; i < propertyName.length(); i++) {
+			char ch = propertyName.charAt(i);
+			if (ch >= 'A' && ch <= 'Z') {
+				capital = true;
+			}
+			
+			if (capital && ! first) {
+				sb.append("_").append(Character.toLowerCase(ch));
+			} else if (capital) {
+				first = false;
+				capital = false;
+				sb.append(Character.toLowerCase(ch));
+			} else {
+				sb.append(ch);
+			}
+		}
+		return sb.toString();
 	}
 
 }

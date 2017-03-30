@@ -18,10 +18,22 @@ public class BeanHandler<T> implements ResultSetHandler<T>{
 	/** 类型 */
 	private Class<T> type;
 	
+	/**
+	 * 构造函数
+	 * @param type
+	 * @param convert
+	 */
+	public BeanHandler(Class<T> type, RowProcessor convert) {
+		this.type = type;
+		this.convert = convert;
+	}
+	
+	/* 
+	 * @see jdbc.ResultSetHandler#handle(java.sql.ResultSet)
+	 */
 	@Override
 	public T handle(ResultSet rs) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return !rs.next() ? null : convert.toBean(rs, type);
 	}
 
 }
