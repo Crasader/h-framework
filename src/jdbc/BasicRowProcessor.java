@@ -16,6 +16,9 @@ public class BasicRowProcessor implements RowProcessor{
 	/** 默认转换器 */
 	public static BeanProcessor convert = new BeanProcessor();
 	
+	/** 实例 */
+	public static RowProcessor instance = new BasicRowProcessor();
+	
 	/* 
 	 * @see jdbc.RowProcessor#toArray(java.sql.ResultSet)
 	 */
@@ -42,8 +45,7 @@ public class BasicRowProcessor implements RowProcessor{
 
 	@Override
 	public <T> List<T> toBeanList(ResultSet rs, Class<T> type) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return convert.toBeanList(rs, type);
 	}
 
 	/* 

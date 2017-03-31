@@ -255,4 +255,22 @@ public class Lang {
 	public static boolean isInteger(Class<?> clazz) {
 		return is(clazz, int.class) || is(clazz, Integer.class);
 	}
+
+	/**
+	 * 获得类上指定的Annotation
+	 * @param clazz
+	 * @param anClass
+	 * @return
+	 * $Date: 2017年3月31日下午3:17:26
+	 */
+	public static <T extends Annotation> T getAnnotation(Class<?> clazz, Class<T> anClass) {
+		while (null != clazz && clazz != Object.class) {
+			T annotation = clazz.getAnnotation(anClass);
+			if (null != annotation) {
+				return annotation;
+			}
+			clazz = clazz.getSuperclass();
+		}
+		return null;
+	}
 }

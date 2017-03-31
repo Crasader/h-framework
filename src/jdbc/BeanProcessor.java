@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -57,8 +58,27 @@ public class BeanProcessor {
 		return createBean(rs, type, props, columnProperty);
 	}
 	
+	/**
+	 * 获得转换对象列表
+	 * @param rs
+	 * @param type
+	 * @return
+	 * @throws SQLException
+	 * $Date: 2017年3月31日下午1:29:21
+	 */
 	public <T> List<T> toBeanList(ResultSet rs, Class<T> type) throws SQLException{
-		return null;
+		List<T> result = new ArrayList<>();
+		if (!rs.next()) {
+			return result;
+		}
+		PropertyDescriptor[] props = getPropertyDescriptors(type);
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int[] columnProperty = mapColumnToProperty(rsmd, props);
+		
+		do {
+			result.add(createBean(rs, type, props, columnProperty));
+		} while (rs.next());
+		return result;
 	}
 	
 	/**

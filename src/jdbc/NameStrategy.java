@@ -6,6 +6,8 @@ package jdbc;
  *
  */
 public interface NameStrategy {
+	/** 默认的策略 */
+	static DefaultNameStrategy defaultStrategy = new DefaultNameStrategy();
 	
 	/**
 	 * 将列名转换成属性名称

@@ -3,15 +3,20 @@ package jdbc.orm;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
 
+import common.Lang;
+import jdbc.DefaultNameStrategy;
+import jdbc.NameStrategy;
 import jdbc.orm.cache.CacheConfig;
 import jdbc.orm.cache.CacheFactory;
 import jdbc.orm.extractor.BaseJdbcExtractor;
 import jdbc.orm.transaction.TransactionListener;
+import util.Scans;
 
 public class JdbcFactory implements InitializingBean{
 	/** 扫描的包 */
@@ -38,6 +43,14 @@ public class JdbcFactory implements InitializingBean{
 	 */
 	public void setScanPackage(String scanPackage) {
 		this.scanPackage = scanPackage;
+	}
+	
+	/**
+	 * @return
+	 * $Date: 2017年3月31日下午3:13:38
+	 */
+	public String getScanPackage() {
+		return scanPackage;
 	}
 	
 	/**
@@ -103,6 +116,16 @@ public class JdbcFactory implements InitializingBean{
 	 */
 	public void init() throws Exception {
 		parseCacheConfig();
+		
+		// 扫描JDBC组建
+		Set<Class<?>> set = Scans.getClasses(getScanPackage());
+		for (Class<?> clazz : set) {
+			jdbc.orm.annotation.JdbcEntity annotation = Lang.getAnnotation(clazz, jdbc.orm.annotation.JdbcEntity.class);
+			if (annotation != null) {
+				JdbcEntity entity = JdbcEntity.resolve(clazz, NameStrategy.defaultStrategy);
+				entityMap.put(clazz, entity);
+			}
+		}
 	}
 	
 	/**

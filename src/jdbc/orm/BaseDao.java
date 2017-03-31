@@ -6,9 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import jdbc.BasicRowProcessor;
 import jdbc.Params;
 import jdbc.ResultSetHandler;
 import jdbc.SqlFactory;
+import jdbc.handler.BeanHandler;
+import jdbc.handler.BeanListHandler;
 import jdbc.handler.ColumnListHandler;
 
 /**
@@ -121,7 +124,8 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 			return;
 		}
 		entity = jdbcFactory.getJdbcEntity(clazz);
-		
+		handler = new BeanHandler<>(clazz, BasicRowProcessor.instance);
+		listHandler = new BeanListHandler<>(clazz);
 		columnListHandler = new ColumnListHandler(1, null);
 	}
 

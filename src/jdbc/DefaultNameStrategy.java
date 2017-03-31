@@ -6,6 +6,7 @@ package jdbc;
  * @version 1.0.0.0 2017年3月29日下午5:55:40
  */
 public class DefaultNameStrategy implements NameStrategy{
+	
 	/* 
 	 * @see jdbc.NameStrategy#columnNameToPropertyName(java.lang.String)
 	 */
