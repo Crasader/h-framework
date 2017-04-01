@@ -88,6 +88,6 @@ public class JdbcUtil {
 			jdbcFields[i].ignore = Lang.hasAnnotation(jdbcFields[i].field, IgnoreField.class);
 			jdbcFields[i].jdbcType = Lang.getJdbcType(jdbcFields[i].field.getType());
 		}
-		return null;
+		return jdbcFields;
 	}
 }

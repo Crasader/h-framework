@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.InitializingBean;
 
 import common.Lang;
-import jdbc.DefaultNameStrategy;
 import jdbc.NameStrategy;
 import jdbc.orm.cache.CacheConfig;
 import jdbc.orm.cache.CacheFactory;
