@@ -4,13 +4,21 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+
 import jdbc.Param;
 import jdbc.Params;
 import jdbc.ResultSetHandler;
 import jdbc.orm.JdbcEntity;
 import jdbc.orm.JdbcFactory;
+import jdbc.orm.extractor.BaseJdbcExtractor;
 import jdbc.orm.transaction.Transaction;
 import jdbc.orm.transaction.TransactionListener;
+import log.InternalLoggerFactory;
+import log.Logger;
 
 /**
  * DefaultJdbcSession
@@ -18,11 +26,39 @@ import jdbc.orm.transaction.TransactionListener;
  * @version 1.0.0.0 2017年4月1日上午11:56:21
  */
 public class DefaultJdbcSession implements JdbcSession, TransactionListener{
-
+	private static final Logger log = InternalLoggerFactory.getLogger("jdbc.orm.session.jdbc");
+	
+	private Connection connection;
+	private DataSource dataSource;
+	private Transaction transaction;
+	private boolean hasTransaction;
+	private boolean closed;
+	private BaseJdbcExtractor jdbcExtractor;
+	private JdbcFactory jdbcFactory;
+	
+	/**
+	 * 构造函数
+	 * @param jdbcFactory
+	 */
+	public DefaultJdbcSession(JdbcFactory jdbcFactory) {
+		this.dataSource = jdbcFactory.getDataSource();
+		this.jdbcFactory = jdbcFactory;
+		this.jdbcExtractor = jdbcFactory.getBaseJdbcExtractor();
+		try {
+			this.connection = DataSourceUtils.getConnection(this.dataSource);
+		} catch (CannotGetJdbcConnectionException e) {
+			throw new RuntimeException("cannot get jdbcConnection");
+		}
+	}
+	
+	/* 
+	 * @see jdbc.orm.extractor.BaseJdbcExtractor#read(java.lang.Object, jdbc.orm.JdbcEntity, jdbc.ResultSetHandler)
+	 */
 	@Override
 	public <T, PK> T read(PK pk, JdbcEntity entity, ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO 之后添加缓存策略
+		T t = jdbcExtractor.read(pk, entity, handler);
+		return t;
 	}
 
 	@Override

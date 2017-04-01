@@ -14,6 +14,8 @@ import jdbc.NameStrategy;
 import jdbc.orm.cache.CacheConfig;
 import jdbc.orm.cache.CacheFactory;
 import jdbc.orm.extractor.BaseJdbcExtractor;
+import jdbc.orm.session.DefaultJdbcSession;
+import jdbc.orm.session.JdbcSession;
 import jdbc.orm.transaction.TransactionListener;
 import util.Scans;
 
@@ -153,7 +155,16 @@ public class JdbcFactory implements InitializingBean{
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		
+		init();
+	}
+
+	/**
+	 * 开启一个session
+	 * @return
+	 * $Date: 2017年4月1日下午1:57:33
+	 */
+	public JdbcSession openSession() {
+		return new DefaultJdbcSession(this);
 	}
 
 }
