@@ -11,8 +11,10 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
+import jdbc.orm.util.JdbcUtil;
 import log.InternalLoggerFactory;
 import log.Logger;
 
@@ -39,10 +41,31 @@ public class BaseJdbcExtractor implements JdbcExtractor, InitializingBean{
 		
 	}
 
+	/* 
+	 * @see jdbc.JdbcExtractor#query(java.lang.String, java.util.List, jdbc.ResultSetHandler)
+	 */
 	@Override
 	public <T> T query(String sql, List<Param> params, ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		sql = sqlFactory.get(sql);
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			// 填充参数
+			sqlBuilder.buildParameters(pstmt, params);
+			rs = pstmt.executeQuery();
+			
+			return handler.handle(rs);
+		} catch (Exception e) {
+			RuntimeException re = new RuntimeException("query data error", e);
+			throw re;
+		} finally {
+			DbUtil.closeQuietly(pstmt, rs);
+			DataSourceUtils.releaseConnection(conn, dataSource);
+		}
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import java.util.Map;
 import jdbc.Param;
 import jdbc.Params;
 import jdbc.ResultSetHandler;
-import jdbc.orm.extractor.BaseJdbcExtractor;
+import jdbc.orm.extractor.OrmJdbcExtractor;
 import jdbc.orm.session.JdbcSession;
 import jdbc.orm.session.JdbcSessionUtil;
 
@@ -15,7 +15,7 @@ import jdbc.orm.session.JdbcSessionUtil;
  * @author huangliy
  * @version 1.0.0.0 2017年3月28日下午8:30:04
  */
-public class JdbcTemplate implements BaseJdbcExtractor{
+public class JdbcTemplate implements OrmJdbcExtractor{
 	/** jdbcFactory */
 	private JdbcFactory jdbcFactory;
 	
@@ -123,10 +123,18 @@ public class JdbcTemplate implements BaseJdbcExtractor{
 		return null;
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.BaseJdbcExtractor#read(java.lang.Object, jdbc.orm.JdbcEntity, jdbc.ResultSetHandler)
+	 */
 	@Override
 	public <T, PK> T read(PK pk, JdbcEntity entity, ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
+		T result = doExecute(new JdbcCallBack<T>() {
+			@Override
+			public T doInJdbcSession(JdbcSession session) {
+				return session.read(pk, entity, handler);
+			}
+		});
+		return result;
 	}
 
 	@Override

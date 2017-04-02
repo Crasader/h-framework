@@ -14,7 +14,7 @@ import jdbc.Params;
 import jdbc.ResultSetHandler;
 import jdbc.orm.JdbcEntity;
 import jdbc.orm.JdbcFactory;
-import jdbc.orm.extractor.BaseJdbcExtractor;
+import jdbc.orm.extractor.OrmJdbcExtractor;
 import jdbc.orm.transaction.Transaction;
 import jdbc.orm.transaction.TransactionListener;
 import log.InternalLoggerFactory;
@@ -33,7 +33,7 @@ public class DefaultJdbcSession implements JdbcSession, TransactionListener{
 	private Transaction transaction;
 	private boolean hasTransaction;
 	private boolean closed;
-	private BaseJdbcExtractor jdbcExtractor;
+	private OrmJdbcExtractor jdbcExtractor;
 	private JdbcFactory jdbcFactory;
 	
 	/**

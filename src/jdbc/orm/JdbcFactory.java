@@ -13,7 +13,7 @@ import common.Lang;
 import jdbc.NameStrategy;
 import jdbc.orm.cache.CacheConfig;
 import jdbc.orm.cache.CacheFactory;
-import jdbc.orm.extractor.BaseJdbcExtractor;
+import jdbc.orm.extractor.OrmJdbcExtractor;
 import jdbc.orm.session.DefaultJdbcSession;
 import jdbc.orm.session.JdbcSession;
 import jdbc.orm.transaction.TransactionListener;
@@ -31,7 +31,7 @@ public class JdbcFactory implements InitializingBean{
 	
 	private DataSource dataSource;
 	
-	private BaseJdbcExtractor baseJdbcExtractor;
+	private OrmJdbcExtractor baseJdbcExtractor;
 	
 	private List<TransactionListener> listeners;
 	
@@ -66,7 +66,7 @@ public class JdbcFactory implements InitializingBean{
 	 * @return
 	 * $Date: 2017年3月1日下午8:52:48
 	 */
-	public BaseJdbcExtractor getBaseJdbcExtractor() {
+	public OrmJdbcExtractor getBaseJdbcExtractor() {
 		return baseJdbcExtractor;
 	}
 	
@@ -74,7 +74,7 @@ public class JdbcFactory implements InitializingBean{
 	 * @param baseJdbcExtractor
 	 * $Date: 2017年3月1日下午8:56:17
 	 */
-	public void setBaseJdbcExtractor(BaseJdbcExtractor baseJdbcExtractor) {
+	public void setBaseJdbcExtractor(OrmJdbcExtractor baseJdbcExtractor) {
 		this.baseJdbcExtractor = baseJdbcExtractor;
 	}
 	

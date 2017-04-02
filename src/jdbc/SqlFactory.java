@@ -1,5 +1,10 @@
 package jdbc;
 
+/**
+ * SqlFactory
+ * @author huangliy
+ * @version 1.0.0.0 2017年4月2日下午1:42:01
+ */
 public class SqlFactory {
 
 	/**
@@ -8,8 +13,8 @@ public class SqlFactory {
 	 * @return String
 	 */
 	public String get(String sql) {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO
+		return sql;
 	}
 
 }

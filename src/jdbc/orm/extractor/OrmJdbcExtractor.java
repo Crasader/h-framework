@@ -13,7 +13,7 @@ import jdbc.orm.JdbcEntity;
  * @author huangliy
  * @version 1.0.0.0 2017年3月1日下午8:03:23
  */
-public interface BaseJdbcExtractor extends JdbcExtractor{
+public interface OrmJdbcExtractor extends JdbcExtractor{
 	/**
 	 * 按照主键从数据库中检索结果
 	 * @param pk

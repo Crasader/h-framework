@@ -3,7 +3,7 @@ package jdbc.orm.session;
 import java.sql.Connection;
 
 import jdbc.orm.JdbcFactory;
-import jdbc.orm.extractor.BaseJdbcExtractor;
+import jdbc.orm.extractor.OrmJdbcExtractor;
 import jdbc.orm.transaction.Transaction;
 
 /**
@@ -11,7 +11,7 @@ import jdbc.orm.transaction.Transaction;
  * @author huangliy
  * @version 1.0.0.0 2017年4月1日上午11:24:16
  */
-public interface JdbcSession extends BaseJdbcExtractor{
+public interface JdbcSession extends OrmJdbcExtractor{
 	/**
 	 * 获取连接
 	 * @return
