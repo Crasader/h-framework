@@ -1,7 +1,6 @@
 package jdbc.orm.extractor;
 
 import java.util.List;
-import java.util.Map;
 
 import jdbc.JdbcExtractor;
 import jdbc.Param;
@@ -53,85 +52,4 @@ public interface OrmJdbcExtractor extends JdbcExtractor{
 	 * @param entity
 	 */
 	<PK> void delete(final PK id, final JdbcEntity entity);
-	
-	/**
-	 * 查询
-	 * @param selectkey
-	 * @param sql
-	 * @param params
-	 * @param entity
-	 * @param handler
-	 * @return
-	 */
-	<T> List<T> query(final String selectkey, final String sql, final List<Param> params, final JdbcEntity entity, final ResultSetHandler<T> handler);
-
-	/**
-	 * 更新数据
-	 * @param sql
-	 * @param params
-	 * @param entity
-	 * @param pk
-	 * @param keys
-	 * @return
-	 */
-	<PK> int update(final String sql, final List<Param> params, final JdbcEntity entity, final PK pk, final String... keys);
-	
-	/**
-	 * 更新数据可被延迟
-	 * @param sql
-	 * @param params
-	 * @param entity
-	 * @param pk
-	 * @param keys
-	 * @return
-	 */
-	<PK> int updateDelay(final String sql, final List<Param> params, final JdbcEntity entity, final PK pk, final String... keys);
-	
-	/**
-	 * 批量执行
-	 * @param sql
-	 * @param paramsList
-	 * @param entity
-	 * @param key
-	 */
-	void batch(final String sql, final List<List<Param>> paramsList, final JdbcEntity entity, final String... key);
-	
-	/**
-	 * 调用存储过程
-	 * @param sql
-	 * @param params
-	 * @param entity
-	 * @param keys
-	 * @return
-	 */
-	boolean callProcedure(final String sql, final List<Param> params, final JdbcEntity entity, final String... keys);
-
-	/**
-	 * 调用存储过程带返回
-	 * @param sql
-	 * @param params
-	 * @param entity
-	 * @param keys
-	 * @return
-	 */
-	List<Object> callProcedureWithReturn(final String sql, final List<Param> params, final JdbcEntity entity, final String... keys);
-	
-	/**
-	 * 查询获得结果集
-	 * @param sql
-	 * @param params
-	 * @param entity
-	 * @param handler
-	 * @return
-	 */
-	<T> T query(String sql, List<Param> params, final JdbcEntity entity, ResultSetHandler<T> handler);
-	
-	/**
-	 * 查询获得结果集
-	 * @param sql
-	 * @param params
-	 * @param entity
-	 * @return
-	 */
-	List<Map<String, Object>> query(String sql, List<Param> params, final JdbcEntity entity);
 }

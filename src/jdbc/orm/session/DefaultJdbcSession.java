@@ -86,55 +86,6 @@ public class DefaultJdbcSession implements JdbcSession, TransactionListener{
 	}
 
 	@Override
-	public <T> List<T> query(String selectkey, String sql, List<Param> params, JdbcEntity entity,
-			ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <PK> int update(String sql, List<Param> params, JdbcEntity entity, PK pk, String... keys) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public <PK> int updateDelay(String sql, List<Param> params, JdbcEntity entity, PK pk, String... keys) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void batch(String sql, List<List<Param>> paramsList, JdbcEntity entity, String... key) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean callProcedure(String sql, List<Param> params, JdbcEntity entity, String... keys) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public List<Object> callProcedureWithReturn(String sql, List<Param> params, JdbcEntity entity, String... keys) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T> T query(String sql, List<Param> params, JdbcEntity entity, ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> query(String sql, List<Param> params, JdbcEntity entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public <T> T query(String sql, List<Param> params, ResultSetHandler<T> handler) {
 		// TODO Auto-generated method stub
 		return null;

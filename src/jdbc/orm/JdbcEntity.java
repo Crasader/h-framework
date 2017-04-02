@@ -3,11 +3,14 @@ package jdbc.orm;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.Lang;
 import jdbc.NameStrategy;
 import jdbc.Param;
 import jdbc.Params;
+import jdbc.orm.annotation.Index;
 import jdbc.orm.cache.CacheManager;
 import jdbc.orm.util.JdbcUtil;
+import util.ReflectUtil;
 
 /**
  * JdbcEntity
@@ -63,8 +66,28 @@ public class JdbcEntity {
 		} else {
 			entity.id = new ComplexIdEntity(entity.idFields);
 		}
-		//TODO 索引解析
-		//TODO 生成通用查询语句
+		// 索引解析
+		Index index = Lang.getAnnotation(entity.clazz, Index.class);
+		if (null != index) {
+			String[] columns = index.value();
+			List<JdbcField> indexFields = new ArrayList<>();
+			for (String column : columns) {
+				JdbcField temp = null;
+				for (JdbcField field : entity.fields) {
+					if (column.equals(field.propertyName)) {
+						temp = field;
+						break;
+					}
+				}
+				if (temp == null) {
+					throw new RuntimeException("can not find index column, index: " + column);
+				}
+				indexFields.add(temp);
+			}
+			entity.index = new DefaultIndexEntity(indexFields.toArray(new JdbcField[0]), entity);
+			
+		}
+		// 生成通用查询语句
 		entity.insertSQL = generatorInsertSQL(entity);
 		entity.updateSQL = generatorUpdateSQL(entity);
 		entity.selectSQL = generatorSelectSQL(entity);
@@ -228,5 +251,121 @@ public class JdbcEntity {
 			params.addParam(keys[index++], field.jdbcType);
 		}
 		return params;
+	}
+	
+	/**
+	 * 构建插入参数
+	 * @param keys
+	 * @return
+	 * $Date: 2017年4月2日下午2:46:00
+	 */
+	public List<Param> builderInsertParams(Object instance) {
+		Params params = new Params();
+		for (JdbcField field : fields) {
+			if (field.ignore || field.insertIgnore) {
+				continue;
+			}
+			params.addParam(ReflectUtil.get(field.field, instance), field.jdbcType);
+		}
+		return params;
+	}
+	
+	/**
+	 * 构建更新参数
+	 * @param instance
+	 * @return
+	 * $Date: 2017年4月2日下午3:02:02
+	 */
+	public List<Param> builderUpdateParams(Object instance) {
+		Params params = new Params();
+		for (JdbcField field : fields) {
+			if (field.ignore || field.isPrimary) {
+				continue;
+			}
+			params.addParam(ReflectUtil.get(field.field, instance), field.jdbcType);
+		}
+		
+		for (JdbcField field : idFields) {
+			params.addParam(ReflectUtil.get(field.field, instance), field.jdbcType);
+		}
+		return params;
+	}
+	
+	/**
+	 * 获得实体类型
+	 * @return
+	 * $Date: 2017年4月2日下午1:51:45
+	 */
+	public Class<?> getEntityClass() {
+		return clazz;
+	}
+
+	public JdbcField[] getFields() {
+		return fields;
+	}
+
+	public IdEntity getId() {
+		return id;
+	}
+
+	public IndexEntity getIndex() {
+		return index;
+	}
+
+	public Class<?> getEnhanceClazz() {
+		return enhanceClazz;
+	}
+
+	public NameStrategy getNameStrategy() {
+		return nameStrategy;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public JdbcField[] getIdFields() {
+		return idFields;
+	}
+
+	public boolean isEnhance() {
+		return enhance;
+	}
+
+	public String getInsertSQL() {
+		return insertSQL;
+	}
+
+	public String getUpdateSQL() {
+		return updateSQL;
+	}
+
+	public String getSelectAllCountSQL() {
+		return selectAllCountSQL;
+	}
+
+	public String getSelectSQL() {
+		return selectSQL;
+	}
+
+	public String getSelectForUpdateSQL() {
+		return selectForUpdateSQL;
+	}
+
+	public String getDeleteSQL() {
+		return deleteSQL;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+	
+	/**
+	 * 主键是否自增
+	 * @return
+	 * $Date: 2017年4月2日下午2:53:22
+	 */
+	public boolean isAutoGenerator() {
+		return id.isAutoGenerator();
 	}
 }

@@ -11,10 +11,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
-import jdbc.orm.util.JdbcUtil;
 import log.InternalLoggerFactory;
 import log.Logger;
 
@@ -118,10 +116,37 @@ public class BaseJdbcExtractor implements JdbcExtractor, InitializingBean{
 		return DataSourceUtils.getConnection(dataSource);
 	}
 
+	/* 
+	 * @see jdbc.JdbcExtractor#insert(java.lang.String, java.util.List, boolean)
+	 */
 	@Override
 	public int insert(String sql, List<Param> params, boolean autoGenerator) {
-		// TODO Auto-generated method stub
-		return 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		int result = 0;
+		sql = sqlFactory.get(sql);
+		
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			sqlBuilder.buildParameters(pstmt, params);
+			result = pstmt.executeUpdate();
+			
+			if (result != 0 && autoGenerator) {
+				pstmt.close();
+				pstmt = conn.prepareStatement("select last_insert_id()");
+				rs = pstmt.executeQuery();
+				
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException("insert db error: " + sql);
+		}
+		
+		return result;
 	}
 
 	@Override

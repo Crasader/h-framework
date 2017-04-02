@@ -83,7 +83,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public List<T> getModels() {
-		return jdbcTemplate.query(entity.getSelectAllSQL(), Params.EMPTY, entity, listHandler);
+		return jdbcTemplate.query(entity.getSelectAllSQL(), Params.EMPTY, listHandler);
 	}
 
 	/* 
@@ -91,7 +91,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public List<T> getResultByHQL(String sql) {
-		return jdbcTemplate.query(sql, Params.EMPTY, entity, listHandler);
+		return jdbcTemplate.query(sql, Params.EMPTY, listHandler);
 	}
 
 	/* 
@@ -107,7 +107,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public long count(String sql, Params params) {
-		List<Object> resultList = jdbcTemplate.query(sql, params, entity, columnListHandler);
+		List<Object> resultList = jdbcTemplate.query(sql, params, columnListHandler);
 		Long value = 0L;
 		if (resultList.size() > 0) {
 			value = (Long) resultList.get(0);

@@ -1,10 +1,6 @@
 package jdbc.orm.extractor;
 
-import java.util.List;
-import java.util.Map;
-
 import jdbc.BaseJdbcExtractor;
-import jdbc.Param;
 import jdbc.ResultSetHandler;
 import jdbc.orm.JdbcEntity;
 
@@ -23,77 +19,38 @@ public class CommonJdbcExtractor extends BaseJdbcExtractor implements jdbc.orm.e
 		return query(entity.getSelectSQL(false), entity.builderSelectParams(pk), handler);
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.OrmJdbcExtractor#readByIndex(java.lang.Object[], jdbc.orm.JdbcEntity, jdbc.ResultSetHandler)
+	 */
 	@Override
 	public <T> T readByIndex(Object[] indexs, JdbcEntity entity, ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
+		return query(entity.getIndex().selectSQL(), entity.getIndex().builderParams(indexs), handler);
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.OrmJdbcExtractor#insert(java.lang.Object, jdbc.orm.JdbcEntity, java.lang.String[])
+	 */
 	@Override
 	public <T> void insert(T newInstance, JdbcEntity entity, String... keys) {
-		// TODO Auto-generated method stub
-		
+		int result = insert(entity.getInsertSQL(), entity.builderInsertParams(newInstance), entity.isAutoGenerator());
+		if (entity.isAutoGenerator()) {
+			entity.getId().setIdValue(newInstance, result);
+		}
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.OrmJdbcExtractor#update(java.lang.Object, jdbc.orm.JdbcEntity)
+	 */
 	@Override
 	public <T> void update(T transientObject, JdbcEntity entity) {
-		// TODO Auto-generated method stub
-		
+		update(entity.getUpdateSQL(), entity.builderUpdateParams(transientObject));
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.OrmJdbcExtractor#delete(java.lang.Object, jdbc.orm.JdbcEntity)
+	 */
 	@Override
 	public <PK> void delete(PK id, JdbcEntity entity) {
-		// TODO Auto-generated method stub
-		
+		update(entity.getDeleteSQL(), entity.builderSelectParams(id));
 	}
-
-	@Override
-	public <T> List<T> query(String selectkey, String sql, List<Param> params, JdbcEntity entity,
-			ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <PK> int update(String sql, List<Param> params, JdbcEntity entity, PK pk, String... keys) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public <PK> int updateDelay(String sql, List<Param> params, JdbcEntity entity, PK pk, String... keys) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void batch(String sql, List<List<Param>> paramsList, JdbcEntity entity, String... key) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean callProcedure(String sql, List<Param> params, JdbcEntity entity, String... keys) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public List<Object> callProcedureWithReturn(String sql, List<Param> params, JdbcEntity entity, String... keys) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <T> T query(String sql, List<Param> params, JdbcEntity entity, ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> query(String sql, List<Param> params, JdbcEntity entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

@@ -9,10 +9,6 @@ import jdbc.Param;
  * @author huangliy
  */
 public interface IndexEntity {
-	/**
-	 * 初始化实体
-	 */
-	void init();
 	
 	/**
 	 * 获取依靠索引用于查询语句
