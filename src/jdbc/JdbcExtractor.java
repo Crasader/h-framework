@@ -42,14 +42,4 @@ public interface JdbcExtractor {
 	 * @return
 	 */
 	int insert(String sql, List<Param> params, boolean autoGenerator);
-	
-	/**
-	 * 执行批量操作
-	 * @param sql
-	 * @param paramsList
-	 */
-	void batch(String sql, List<List<Param>> paramsList);
-	void batch(String sql, List<List<Param>> paramsList, int batchSize);
-	void batch(List<String> sqlList);
-	void batch(List<String> sqlList, int batchSize);
 }

@@ -10,7 +10,6 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import jdbc.Param;
-import jdbc.Params;
 import jdbc.ResultSetHandler;
 import jdbc.orm.JdbcEntity;
 import jdbc.orm.JdbcFactory;
@@ -93,52 +92,34 @@ public class DefaultJdbcSession implements JdbcSession, TransactionListener{
 		jdbcExtractor.delete(id, entity);
 	}
 
+	/* 
+	 * @see jdbc.JdbcExtractor#query(java.lang.String, java.util.List, jdbc.ResultSetHandler)
+	 */
 	@Override
 	public <T> T query(String sql, List<Param> params, ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcExtractor.query(sql, params, handler);
 	}
 
+	/* 
+	 * @see jdbc.JdbcExtractor#query(java.lang.String, java.util.List)
+	 */
 	@Override
 	public List<Map<String, Object>> query(String sql, List<Param> params) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcExtractor.query(sql, params);
 	}
 
+	/* 
+	 * @see jdbc.JdbcExtractor#update(java.lang.String, java.util.List)
+	 */
 	@Override
 	public int update(String sql, List<Param> params) {
-		// TODO Auto-generated method stub
-		return 0;
+		return jdbcExtractor.update(sql, params);
 	}
 
 	@Override
 	public int insert(String sql, List<Param> params, boolean autoGenerator) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void batch(String sql, List<List<Param>> paramsList) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void batch(String sql, List<List<Param>> paramsList, int batchSize) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void batch(List<String> sqlList) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void batch(List<String> sqlList, int batchSize) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -159,33 +140,50 @@ public class DefaultJdbcSession implements JdbcSession, TransactionListener{
 		
 	}
 
+	/* 
+	 * @see jdbc.orm.session.JdbcSession#getConnection()
+	 */
 	@Override
 	public Connection getConnection() {
-		// TODO Auto-generated method stub
-		return null;
+		return connection;
 	}
 
+	/* 
+	 * @see jdbc.orm.session.JdbcSession#getTransaction()
+	 */
 	@Override
 	public Transaction getTransaction() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/* 
+	 * @see jdbc.orm.session.JdbcSession#isClosed()
+	 */
 	@Override
 	public boolean isClosed() {
-		// TODO Auto-generated method stub
-		return false;
+		return closed;
 	}
 
+	/* 
+	 * @see jdbc.orm.session.JdbcSession#close()
+	 */
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
-		
+		if (isClosed()) {
+			throw new RuntimeException("session is already closed");
+		}
+		// 释放连接
+		DataSourceUtils.releaseConnection(connection, dataSource);
+		// 清理数据
+		clear();
+		closed = true;
 	}
 
+	/* 
+	 * @see jdbc.orm.session.JdbcSession#clear()
+	 */
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
 		
 	}
 

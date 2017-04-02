@@ -13,6 +13,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
+import jdbc.handler.MapListHandler;
 import log.InternalLoggerFactory;
 import log.Logger;
 
@@ -23,7 +24,7 @@ import log.Logger;
  */
 public class BaseJdbcExtractor implements JdbcExtractor, InitializingBean{
 	/** log */
-	private static final Logger log = InternalLoggerFactory.getLogger("a");
+	private static final Logger log = InternalLoggerFactory.getLogger("jdbc");
 	
 	@Autowired
 	private SqlFactory sqlFactory;
@@ -33,10 +34,14 @@ public class BaseJdbcExtractor implements JdbcExtractor, InitializingBean{
 	/** sql填充器 */
 	SqlBuilder sqlBuilder = new SqlBuilder();
 	
+	private MapListHandler maplistHandler = new MapListHandler();
+	
+	/* 
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// TODO Auto-generated method stub
-		
+		// doNothing
 	}
 
 	/* 
@@ -66,10 +71,12 @@ public class BaseJdbcExtractor implements JdbcExtractor, InitializingBean{
 		}
 	}
 
+	/* 
+	 * @see jdbc.JdbcExtractor#query(java.lang.String, java.util.List)
+	 */
 	@Override
 	public List<Map<String, Object>> query(String sql, List<Param> params) {
-		// TODO Auto-generated method stub
-		return null;
+		return query(sql, params, maplistHandler);
 	}
 
 	/* 
@@ -147,29 +154,5 @@ public class BaseJdbcExtractor implements JdbcExtractor, InitializingBean{
 		}
 		
 		return result;
-	}
-
-	@Override
-	public void batch(String sql, List<List<Param>> paramsList) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void batch(String sql, List<List<Param>> paramsList, int batchSize) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void batch(List<String> sqlList) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void batch(List<String> sqlList, int batchSize) {
-		// TODO Auto-generated method stub
-		
 	}
 }

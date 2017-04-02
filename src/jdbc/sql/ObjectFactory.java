@@ -104,6 +104,7 @@ public class ObjectFactory {
 	
 	public static void main(String[] args) throws Throwable {
 		Sqls sqls = ObjectFactory.convertor("D:\\github\\h-framework\\src\\jdbc\\sql\\sql.xml");
+		System.out.println(sqls.getSql().size());
 		System.out.println("haha");
 	}
 }
