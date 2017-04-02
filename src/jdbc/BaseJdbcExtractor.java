@@ -172,23 +172,4 @@ public class BaseJdbcExtractor implements JdbcExtractor, InitializingBean{
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public boolean callProcedure(String sql, List<Param> params) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public List<Object> callProcedureWithReturn(String sql, List<Param> params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> callQueryProcedure(String sql, List<Params> params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

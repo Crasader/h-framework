@@ -52,28 +52,4 @@ public interface JdbcExtractor {
 	void batch(String sql, List<List<Param>> paramsList, int batchSize);
 	void batch(List<String> sqlList);
 	void batch(List<String> sqlList, int batchSize);
-	
-	/**
-	 * 调用存储过程
-	 * @param sql
-	 * @param params
-	 * @return
-	 */
-	boolean callProcedure(String sql, List<Param> params);
-	
-	/**
-	 * 调用带返回存储过程
-	 * @param sql
-	 * @param params
-	 * @return
-	 */
-	List<Object> callProcedureWithReturn(String sql, List<Param> params);
-	
-	/**
-	 * 调用带返回存储过程
-	 * @param sql
-	 * @param params
-	 * @return
-	 */
-	List<Map<String, Object>> callQueryProcedure(String sql, List<Params> params);
 }

@@ -1,9 +1,6 @@
 package jdbc.orm.extractor;
 
-import java.util.List;
-
 import jdbc.JdbcExtractor;
-import jdbc.Param;
 import jdbc.ResultSetHandler;
 import jdbc.orm.JdbcEntity;
 

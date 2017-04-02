@@ -25,6 +25,7 @@ import log.Logger;
  * @author huangliy
  * @version 1.0.0.0 2017年4月1日上午11:56:21
  */
+//TODO 之后添加缓存策略
 public class DefaultJdbcSession implements JdbcSession, TransactionListener{
 	private static final Logger log = InternalLoggerFactory.getLogger("jdbc.orm.session.jdbc");
 	
@@ -56,33 +57,40 @@ public class DefaultJdbcSession implements JdbcSession, TransactionListener{
 	 */
 	@Override
 	public <T, PK> T read(PK pk, JdbcEntity entity, ResultSetHandler<T> handler) {
-		// TODO 之后添加缓存策略
 		T t = jdbcExtractor.read(pk, entity, handler);
 		return t;
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.OrmJdbcExtractor#readByIndex(java.lang.Object[], jdbc.orm.JdbcEntity, jdbc.ResultSetHandler)
+	 */
 	@Override
 	public <T> T readByIndex(Object[] indexs, JdbcEntity entity, ResultSetHandler<T> handler) {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcExtractor.readByIndex(indexs, entity, handler);
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.OrmJdbcExtractor#insert(java.lang.Object, jdbc.orm.JdbcEntity, java.lang.String[])
+	 */
 	@Override
 	public <T> void insert(T newInstance, JdbcEntity entity, String... keys) {
-		// TODO Auto-generated method stub
-		
+		jdbcExtractor.insert(newInstance, entity, keys);
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.OrmJdbcExtractor#update(java.lang.Object, jdbc.orm.JdbcEntity)
+	 */
 	@Override
 	public <T> void update(T transientObject, JdbcEntity entity) {
-		// TODO Auto-generated method stub
-		
+		jdbcExtractor.update(transientObject, entity);
 	}
 
+	/* 
+	 * @see jdbc.orm.extractor.OrmJdbcExtractor#delete(java.lang.Object, jdbc.orm.JdbcEntity)
+	 */
 	@Override
 	public <PK> void delete(PK id, JdbcEntity entity) {
-		// TODO Auto-generated method stub
-		
+		jdbcExtractor.delete(id, entity);
 	}
 
 	@Override
@@ -134,24 +142,6 @@ public class DefaultJdbcSession implements JdbcSession, TransactionListener{
 	}
 
 	@Override
-	public boolean callProcedure(String sql, List<Param> params) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public List<Object> callProcedureWithReturn(String sql, List<Param> params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Map<String, Object>> callQueryProcedure(String sql, List<Params> params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void begin(Transaction transaction) {
 		// TODO Auto-generated method stub
 		
@@ -199,10 +189,12 @@ public class DefaultJdbcSession implements JdbcSession, TransactionListener{
 		
 	}
 
+	/* 
+	 * @see jdbc.orm.session.JdbcSession#getJdbcFactory()
+	 */
 	@Override
 	public JdbcFactory getJdbcFactory() {
-		// TODO Auto-generated method stub
-		return null;
+		return jdbcFactory;
 	}
 
 }

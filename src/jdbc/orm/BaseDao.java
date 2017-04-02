@@ -34,8 +34,6 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	@Autowired
 	protected JdbcFactory jdbcFactory;
 	@Autowired
-	protected JdbcTemplate jdbcTemplate;
-	@Autowired
 	protected SqlFactory sqlFactory;
 	
 	/* 
@@ -43,7 +41,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public void create(T newInstance) {
-		jdbcTemplate.insert(newInstance, entity);
+		jdbcFactory.getCurrSession(true).insert(newInstance, entity);
 	}
 
 	/* 
@@ -51,7 +49,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public T read(PK id) {
-		return jdbcTemplate.read(id, entity, handler);
+		return jdbcFactory.getCurrSession(true).read(id, entity, handler);
 	}
 
 	/* 
@@ -59,7 +57,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public T readByIndex(Object[] keys) {
-		return jdbcTemplate.readByIndex(keys, entity, handler);
+		return jdbcFactory.getCurrSession(true).readByIndex(keys, entity, handler);
 	}
 
 	/* 
@@ -67,7 +65,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public void update(T transientObject) {
-		jdbcTemplate.update(transientObject, entity);
+		jdbcFactory.getCurrSession(true).update(transientObject, entity);
 	}
 
 	/* 
@@ -75,7 +73,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public void delete(PK id) {
-		jdbcTemplate.delete(id, entity);
+		jdbcFactory.getCurrSession(true).delete(id, entity);
 	}
 
 	/* 
@@ -83,7 +81,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public List<T> getModels() {
-		return jdbcTemplate.query(entity.getSelectAllSQL(), Params.EMPTY, listHandler);
+		return jdbcFactory.getCurrSession(true).query(entity.getSelectAllSQL(), Params.EMPTY, listHandler);
 	}
 
 	/* 
@@ -91,7 +89,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public List<T> getResultByHQL(String sql) {
-		return jdbcTemplate.query(sql, Params.EMPTY, listHandler);
+		return jdbcFactory.getCurrSession(true).query(sql, Params.EMPTY, listHandler);
 	}
 
 	/* 
@@ -99,7 +97,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public void update(String sql) {
-		jdbcTemplate.update(sql, Params.EMPTY);
+		jdbcFactory.getCurrSession(true).update(sql, Params.EMPTY);
 	}
 
 	/* 
@@ -107,7 +105,7 @@ public class BaseDao<T extends JdbcModel, PK extends Serializable> implements IB
 	 */
 	@Override
 	public long count(String sql, Params params) {
-		List<Object> resultList = jdbcTemplate.query(sql, params, columnListHandler);
+		List<Object> resultList = jdbcFactory.getCurrSession(true).query(sql, params, columnListHandler);
 		Long value = 0L;
 		if (resultList.size() > 0) {
 			value = (Long) resultList.get(0);

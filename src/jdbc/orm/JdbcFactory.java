@@ -16,6 +16,7 @@ import jdbc.orm.cache.CacheFactory;
 import jdbc.orm.extractor.OrmJdbcExtractor;
 import jdbc.orm.session.DefaultJdbcSession;
 import jdbc.orm.session.JdbcSession;
+import jdbc.orm.session.JdbcSessionUtil;
 import jdbc.orm.transaction.TransactionListener;
 import util.Scans;
 
@@ -25,6 +26,7 @@ public class JdbcFactory implements InitializingBean{
 	
 	private Map<Class<?>, JdbcEntity> entityMap = new HashMap<>();
 	
+	@SuppressWarnings("unused")
 	private Map<String, CacheConfig> cacheConfigMap = new HashMap<>();
 	
 	private CacheFactory cacheFactory;
@@ -33,6 +35,7 @@ public class JdbcFactory implements InitializingBean{
 	
 	private OrmJdbcExtractor baseJdbcExtractor;
 	
+	@SuppressWarnings("unused")
 	private List<TransactionListener> listeners;
 	
 	/** 缓存配置文件 */
@@ -166,5 +169,13 @@ public class JdbcFactory implements InitializingBean{
 	public JdbcSession openSession() {
 		return new DefaultJdbcSession(this);
 	}
-
+	
+	/**
+	 * 获得当前se说sion
+	 * @return
+	 * $Date: 2017年4月2日下午4:12:41
+	 */
+	public JdbcSession getCurrSession(boolean allowCreate) {
+		return JdbcSessionUtil.doGetSession(this, allowCreate);
+	}
 }
